@@ -8,12 +8,13 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import getColorByPokemonType from "../utils/getColorByPokemonType";
 
 // create a component
 const PokemonCard = (props) => {
-  const { name, image, order, type } = props.pokemon;
+  const { id, name, image, order, type } = props.pokemon;
 
   const pokemonColor = getColorByPokemonType(type);
   const bgColor = {
@@ -29,13 +30,23 @@ const PokemonCard = (props) => {
     <Pressable onPress={goToPokemon} style={styles.container}>
       <View style={styles.card}>
         <View style={styles.spacing}>
-          <View style={bgColor}>
-            <Text style={styles.number}>
-              {`#` + `${order}`.padStart(3, "0")}
-            </Text>
-            <Text style={styles.name}>{name}</Text>
-            <Image source={{ uri: image }} style={styles.image} />
-          </View>
+          {type.length > 1 ? (
+            <LinearGradient colors={pokemonColor} style={styles.bgStyles}>
+              <Text style={styles.number}>
+                {`#` + `${id}`.padStart(3, "0")}
+              </Text>
+              <Text style={styles.name}>{name}</Text>
+              <Image source={{ uri: image }} style={styles.image} />
+            </LinearGradient>
+          ) : (
+            <View style={bgColor}>
+              <Text style={styles.number}>
+                {`#` + `${id}`.padStart(3, "0")}
+              </Text>
+              <Text style={styles.name}>{name}</Text>
+              <Image source={{ uri: image }} style={styles.image} />
+            </View>
+          )}
         </View>
       </View>
     </Pressable>

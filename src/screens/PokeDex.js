@@ -9,6 +9,8 @@ import PokemonList from "../components/PokemonList";
 // create a component
 const PokeDex = () => {
   const [pokemons, setPokemons] = useState([]);
+  const [nextUrl, setNextUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -18,14 +20,16 @@ const PokeDex = () => {
 
   const loadPokemons = async () => {
     try {
-      const response = await getPokemonsApi();
+      setLoading(true);
+      const response = await getPokemonsApi(nextUrl);
+      setNextUrl(response.next);
       const newArrPokemons = await Promise.all(
         response.results.map(async (poke) => {
           const pokeDetails = await getPokemonDetailsByUrlApi(poke.url);
           return {
             id: pokeDetails.id,
             name: pokeDetails.name,
-            type: pokeDetails.types[0].type.name,
+            type: pokeDetails.types.map(({ type }) => type.name), //pokeDetails.types[0].type.name,
             order: pokeDetails.order,
             image: pokeDetails.sprites.other["official-artwork"].front_default,
           };
@@ -34,12 +38,19 @@ const PokeDex = () => {
       setPokemons([...pokemons, ...newArrPokemons]);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <SafeAreaView edges={["top", "left", "right"]}>
-      <PokemonList pokemons={pokemons} />
+      <PokemonList
+        pokemons={pokemons}
+        loadPokemons={loadPokemons}
+        isNext={nextUrl}
+        isLoading={loading}
+      />
     </SafeAreaView>
   );
 };
