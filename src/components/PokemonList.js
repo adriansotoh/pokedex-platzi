@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 
 import PokemonCard from "./PokemonCard";
@@ -40,9 +41,9 @@ const PokemonList = (props) => {
 // define your styles
 const styles = StyleSheet.create({
   flatListContentList: {
-    padding: 5,
+    paddingHorizontal: 5,
   },
-  loader: { marginBottom: 30, marginTop: 30 },
+  loader: { marginBottom: Platform.OS === "android" ? 80 : 60, marginTop: 30 },
 });
 
 //make this component available to the app

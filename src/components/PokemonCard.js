@@ -9,12 +9,14 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 
 import getColorByPokemonType from "../utils/getColorByPokemonType";
 
 // create a component
 const PokemonCard = (props) => {
   const { id, name, image, order, type } = props.pokemon;
+  const navigation = useNavigation();
 
   const pokemonColor = getColorByPokemonType(type);
   const bgColor = {
@@ -23,7 +25,7 @@ const PokemonCard = (props) => {
   };
 
   const goToPokemon = () => {
-    console.log(`Vamos al pokemon ${name}`);
+    navigation.navigate("Pokemon", { id: id });
   };
 
   return (

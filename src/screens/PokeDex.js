@@ -1,6 +1,6 @@
 //import liraries
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { getPokemonsApi, getPokemonDetailsByUrlApi } from "../api/pokemon";
@@ -19,10 +19,14 @@ const PokeDex = () => {
   }, []);
 
   const loadPokemons = async () => {
+    console.log("LOADING");
+    console.log(loading);
     try {
       setLoading(true);
       const response = await getPokemonsApi(nextUrl);
       setNextUrl(response.next);
+      console.log("LOAD MORE POKEMONS");
+      console.log(nextUrl);
       const newArrPokemons = await Promise.all(
         response.results.map(async (poke) => {
           const pokeDetails = await getPokemonDetailsByUrlApi(poke.url);
