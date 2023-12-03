@@ -1,9 +1,12 @@
 //import liraries
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 import { getPokemonDetailsByIdApi } from "../api/pokemon";
 import Header from "../components/Pokemon/Header";
+import Type from "../components/Pokemon/Type";
+import Stats from "../components/Pokemon/Stats";
 
 // create a component
 const Pokemon = (props) => {
@@ -12,6 +15,21 @@ const Pokemon = (props) => {
     navigation,
   } = props;
   const [pokemon, setPokemon] = useState(null);
+
+  useEffect(() => {
+    console.log("NAVIGATION");
+    navigation.setOptions({
+      headerRight: () => null,
+      headerLeft: () => (
+        <Icon
+          name={"arrow-left"}
+          color={"#fff"}
+          size={20}
+          onPress={() => navigation.goBack()}
+        />
+      ),
+    });
+  }, [navigation, params]);
 
   useState(() => {
     (async () => {
@@ -35,6 +53,8 @@ const Pokemon = (props) => {
         image={pokemon.sprites.other["official-artwork"].front_default}
         type={pokemon.types.map(({ type }) => type.name)}
       />
+      <Type types={pokemon.types} />
+      <Stats stats={pokemon.stats} />
     </ScrollView>
   );
 };

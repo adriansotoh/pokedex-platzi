@@ -20,3 +20,12 @@ export const POKEMON_TYPE_COLORS = {
   dark: "#705848",
   fairy: "#EE99AC",
 };
+
+export const POKEMON_MAX_STATS = {
+  hp: 255,
+  attack: 190,
+  defense: 230,
+  "special-attack": 194,
+  "special-defense": 230,
+  speed: 180,
+};

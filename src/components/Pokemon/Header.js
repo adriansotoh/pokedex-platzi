@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, Image, Platform } from "react-native";
 import getColorByPokemonType from "../../utils/getColorByPokemonType";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 
 // create a component
 const Header = (props) => {
@@ -11,11 +12,18 @@ const Header = (props) => {
 
   const color = getColorByPokemonType(type);
 
-  const bgStyle = [{ backgroundColor: color[0] }, styles.bg];
+  const bgStyle = [
+    { backgroundColor: typeof color === "object" ? color[0] : color },
+    styles.bg,
+  ];
 
   return (
     <>
-      <View style={bgStyle} />
+      {type.length === 1 ? (
+        <View style={bgStyle} />
+      ) : (
+        <LinearGradient colors={color} style={styles.bg} />
+      )}
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.name}>{name}</Text>
@@ -67,7 +75,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 250,
-    height: Platform.OS === "android" ? 300 : 250,
+    height: 300,
     resizeMode: "contain",
   },
 });
