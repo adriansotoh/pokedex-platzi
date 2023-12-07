@@ -19,14 +19,11 @@ const PokeDex = () => {
   }, []);
 
   const loadPokemons = async () => {
-    console.log("LOADING");
-    console.log(loading);
     try {
       setLoading(true);
       const response = await getPokemonsApi(nextUrl);
       setNextUrl(response.next);
-      console.log("LOAD MORE POKEMONS");
-      console.log(nextUrl);
+
       const newArrPokemons = await Promise.all(
         response.results.map(async (poke) => {
           const pokeDetails = await getPokemonDetailsByUrlApi(poke.url);

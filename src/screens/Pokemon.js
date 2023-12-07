@@ -17,7 +17,6 @@ const Pokemon = (props) => {
   const [pokemon, setPokemon] = useState(null);
 
   useEffect(() => {
-    console.log("NAVIGATION");
     navigation.setOptions({
       headerRight: () => null,
       headerLeft: () => (
@@ -37,7 +36,6 @@ const Pokemon = (props) => {
         const data = await getPokemonDetailsByIdApi(params.id);
         setPokemon(data);
       } catch (error) {
-        console.log(error);
         navigation.goBack();
       }
     })();

@@ -7,7 +7,6 @@ import { LinearGradient } from "expo-linear-gradient";
 
 // create a component
 const Header = (props) => {
-  console.log(props);
   const { name, order, type, image } = props;
 
   const color = getColorByPokemonType(type);
