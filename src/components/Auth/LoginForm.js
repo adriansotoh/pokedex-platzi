@@ -3,30 +3,29 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Button,
-  Keyboard,
-} from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import { userDetails, user } from "../../utils/userDB";
+import useAuth from "../../hooks/useAuth";
+import Button from "../Button";
 
 // create a component
 const LoginForm = () => {
   const [error, setError] = useState("");
+  const { logIn } = useAuth();
 
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: Yup.object(validationSchema()),
     validateOnChange: false,
     onSubmit: (data) => {
+      console.log("data");
+      console.log(data);
       setError("");
       const { username, password } = data;
       if (username !== user.username || password !== user.password) {
-        setError("El usuario o la contraseña invalido no son correctos");
+        setError("El usuario o la contraseña no son correctos");
       } else {
+        logIn(userDetails);
         console.log("Login correcto");
         console.log(userDetails);
       }
@@ -51,7 +50,12 @@ const LoginForm = () => {
         value={formik.values.password}
         onChangeText={(text) => formik.setFieldValue("password", text)}
       />
-      <Button title="Entrar" onPress={formik.handleSubmit} />
+      {/* <Button title="Entrar" onPress={formik.handleSubmit} /> */}
+      <Button
+        text="Entrar"
+        onPress={formik.handleSubmit}
+        style={styles.button}
+      />
 
       {Object.values(formik.errors).map((err, index) => (
         <Text key={index.toString()} style={styles.error}>
@@ -97,6 +101,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#f00",
     marginTop: 20,
+  },
+  button: {
+    marginHorizontal: 12,
   },
 });
 
