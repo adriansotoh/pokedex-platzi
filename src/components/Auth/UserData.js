@@ -1,12 +1,29 @@
 //import liraries
-import React, { Component } from "react";
-import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
+import React, { useCallback, useState } from "react";
+import { View, Text, StyleSheet, Platform } from "react-native";
 import useAuth from "../../hooks/useAuth";
 import Button from "../Button";
+import { useFocusEffect } from "@react-navigation/native";
+import { getPokemonsFavoriteApi } from "../../api/favorite";
 
 // create a component
 const UserData = () => {
-  const { auth, logIn } = useAuth();
+  const { auth, logOut } = useAuth();
+  const [total, setTotal] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        try {
+          const response = await getPokemonsFavoriteApi();
+          setTotal(response.length || 0);
+        } catch (error) {
+          setTotal(0);
+        }
+      })();
+    }, [])
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -20,9 +37,9 @@ const UserData = () => {
         />
         <ItemMenu title={"Username"} texto={`${auth.username}`} />
         <ItemMenu title={"Email"} texto={`${auth.email}`} />
-        <ItemMenu title={"Total Favoritos"} texto={`0 pokemons`} />
+        <ItemMenu title={"Total Favoritos"} texto={`${total} pokemons`} />
       </View>
-      <Button text="Desconectarse" />
+      <Button text="Desconectarse" onPress={logOut} />
     </View>
   );
 };

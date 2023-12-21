@@ -15,6 +15,7 @@ const Navigation = () => {
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName="PokeDexTab"
     >
       <Tab.Screen
         name="FavoritesTab"
